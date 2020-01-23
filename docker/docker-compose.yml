@@ -1,0 +1,14 @@
+version: '3'
+services:
+  client:
+    build: ../webapp
+    ports:
+      - "80:8080"
+    depends_on:
+      - server
+    environment:
+      - VUE_APP_HOST=localhost
+  server:
+    build: ../core
+    ports:
+      - "5000:5000"

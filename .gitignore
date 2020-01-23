@@ -1,0 +1,5 @@
+*.iml
+.idea
+venv
+core/embeddings/skip_gram*
+core/embeddings/nkjp*
