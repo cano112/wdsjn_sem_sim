@@ -1,8 +1,10 @@
-from core.config import Algorithm
+from core.config import Algorithm, stemmer_path
 from core.config import embedding_path, embedding_shape, get_algorithms
 from core.embeddings.EmbeddingModelWrapper import EmbeddingModelWrapper
 
 import argparse
+
+from core.stemmer.SgjpStemmer import SgjpStemmer
 
 
 def main():
@@ -16,7 +18,8 @@ def main():
     args = parser.parse_args()
 
     embedding = EmbeddingModelWrapper(args.embedding, embedding_shape)
-    algorithms = get_algorithms(embedding)
+    stemmer = SgjpStemmer(stemmer_path)
+    algorithms = get_algorithms(embedding, stemmer)
     result = algorithms[args.algorithm].normalized_score(args.sentence1, args.sentence2)
 
     print("Zdanie 1: {}".format(args.sentence1))

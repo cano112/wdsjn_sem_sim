@@ -3,3 +3,4 @@
 venv
 core/embeddings/skip_gram*
 core/embeddings/nkjp*
+core/stemmer/sgjp-*

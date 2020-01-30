@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 
-from core.config import embedding_path, embedding_shape, get_algorithms
+from core.config import embedding_path, embedding_shape, get_algorithms, stemmer_path
 from core.embeddings.EmbeddingModelWrapper import EmbeddingModelWrapper
+from core.stemmer.SgjpStemmer import SgjpStemmer
 
 DEBUG = True
 
@@ -13,6 +14,8 @@ CORS(app, resources={r'/*': {'origins': '*'}})
 
 embedding = EmbeddingModelWrapper(embedding_path, embedding_shape)
 
+stemmer = SgjpStemmer(stemmer_path)
+
 
 @app.route("/similarity", methods=["GET"])
 @cross_origin()
@@ -20,7 +23,7 @@ def get_similarity():
     algorithm_names = request.args['algorithms'].split(",")
     sentence_1 = request.args['s1']
     sentence_2 = request.args['s2']
-    algorithms = get_algorithms(embedding)
+    algorithms = get_algorithms(embedding, stemmer)
     data = [['Algorithm', "Value"]]
     data.extend(
         [[algorithms[name].get_label(),

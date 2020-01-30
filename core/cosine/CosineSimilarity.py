@@ -1,7 +1,6 @@
 import numpy as np
 
 from core.common.SemanticSimilarityAlgorithm import SemanticSimilarityAlgorithm
-from core.common.utils import preprocess
 
 
 class CosineSimilarity(SemanticSimilarityAlgorithm):
@@ -9,13 +8,14 @@ class CosineSimilarity(SemanticSimilarityAlgorithm):
     def get_label(self):
         return "Cosine Distance"
 
-    def __init__(self, embedding):
+    def __init__(self, embedding, stemmer):
         super().__init__()
         self.embedding = embedding
+        self.stemmer = stemmer
 
     def _absolute_score(self, sentence_1, sentence_2):
-        splitted_1 = preprocess(sentence_1)
-        splitted_2 = preprocess(sentence_2)
+        splitted_1 = self.stemmer.stem_sentence(sentence_1)
+        splitted_2 = self.stemmer.stem_sentence(sentence_2)
         A = self._calculate_mean_vector(splitted_1)
         B = self._calculate_mean_vector(splitted_2)
         return A @ B / (np.linalg.norm(A) * np.linalg.norm(B))
